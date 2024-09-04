@@ -20,10 +20,15 @@ library(plotly)
 
 Gráfica de la función de probabilidad.
 
+
+
+
+
+
 ```{r}
 n <- 10
 
-x_values <- 1:n 
+x_values <- 1:n # Genero una lista de números de 1 a n
 f_prob <- rep(1/n, n)
 
 
@@ -31,14 +36,14 @@ ggplot()+
    geom_point(aes(x_values, f_prob), size=3, color="firebrick")+
    labs(title="Función de probabilidad. Uniforme discreta",
         x="X", y="Probabilidad")+
-   scale_x_continuous(breaks = 1:10)+
-   theme_bw()
+   scale_x_continuous(breaks = 1:n)+
+   theme_minimal()
 ```
 
 Generar una muestra.
 
 ```{r}
-N <- 50000
+N <- 10000
 muestra <- sample(1:n, N, replace = TRUE)
 table(muestra)
 ```
@@ -47,7 +52,7 @@ Gráfica de frecuencias.
 
 ```{r}
 ggplot()+
-  geom_bar(aes(factor(muestra)), color="black", fill="deeppink3")+
+  geom_bar(aes(factor(muestra), fill=factor(muestra)), color="black", alpha=1, show.legend = FALSE)+
   labs(x="Valores", y="Frecuencias")+
   theme_bw()
 ```
