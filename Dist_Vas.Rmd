@@ -21,10 +21,6 @@ library(plotly)
 Gráfica de la función de probabilidad.
 
 
-
-
-
-
 ```{r}
 n <- 10
 
@@ -78,15 +74,102 @@ Var_X
 
 
 
+## Distribución Bernoulli
 
+
+Generamos una muestra $X\sim Ber(p)$
 
 
 ```{r}
-tabla_normal <- tibble(x= rnorm(100), y=rnorm(100))
-
-
-
-ggplot(tabla_normal)+
-  geom_point(aes(x,y))
+N <- 100
+muestra <- rbinom(N, 1, 0.8)
+table(muestra)
 ```
+
+Gráfica de barras
+
+```{r}
+ggplot()+
+  geom_bar(aes(factor(muestra), fill=factor(muestra)), show.legend = FALSE, color="black")+
+  labs(x="Valores", y="Frecuencias")+
+  theme_bw()
+```
+
+
+Comparar la media muestral con la esperanza $E(X)=p=0.8$
+
+
+```{r}
+mean(muestra)
+```
+
+Comparamos la varianza muestral con $Var(X)=p(1-p)=0.16$
+
+
+```{r}
+var(muestra)
+```
+
+## Distribución binomial
+
+Gráfica de probabilidad $X\sim bin(n,p)$
+
+```{r}
+n <- 50
+p <- 0.75
+
+
+
+
+tabla_bin <- tibble(x=0:n, f_x=choose(n,x)*p^x*(1-p)^(n-x), otra_f_x= dbinom(x, n, p))
+
+
+graf_bin <- ggplot(tabla_bin)+
+  geom_segment(aes(x=x, xend=x, y=0, yend=f_x), color="yellow3")+
+  geom_point(aes(x, f_x), color="goldenrod3", size=2)+
+  theme_bw()
+
+
+ggplotly(graf_bin)
+
+```
+
+
+Generamos una muestra
+
+
+```{r}
+N <- 1000
+
+muestra_bin <- tibble(ID_muestra= paste("Muestra", 1:N, sep="_"), x=rbinom(N, n, p), categoria=sample(c("A", "B", "C"), N, replace = TRUE))
+
+table(muestra_bin$x)
+
+ggplot(muestra_bin)+
+  geom_bar(aes(x, fill= categoria), color="black")+
+  theme_bw()
+
+
+
+```
+
+Comparamos la media muestral con la esperanza $E(X)=np$
+
+
+```{r}
+mean(muestra_bin$x)
+```
+
+Comparamos la varianza muestral con $Var(X)=np(1-p)$
+
+```{r}
+var(muestra_bin$x)
+```
+
+
+
+
+
+
+
 
